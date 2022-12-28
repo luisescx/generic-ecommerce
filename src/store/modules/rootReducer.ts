@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { cart } from "./cart/reducer";
+import { favorite } from "./favorites/reducer";
 import { ICartState } from "./cart/types";
 
 export type IReducersState = {
@@ -7,5 +8,6 @@ export type IReducersState = {
 };
 
 export default combineReducers({
-  cart
+  cart,
+  favorite
 });
