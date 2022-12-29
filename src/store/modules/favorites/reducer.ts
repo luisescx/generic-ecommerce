@@ -1,29 +1,42 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import { IFavoriteState } from "./types";
+import { handleFavorite, setFavoriteProducts } from "./actions";
 
 const initialState: IFavoriteState = {
-  products: []
+  products: [],
+  productsIds: [],
+  isInitialDataFetch: false
 };
 
-const favoriteSlice = createSlice({
-  name: "favorite",
-  initialState,
-  reducers: {
-    handleFavorite: (state, action: PayloadAction<number>) => {
-      const productId = action.payload;
+const isProductFavorite = (id: number, localStorageProductsIds: number[]) =>
+  localStorageProductsIds.some((item) => item === id);
 
-      const index = state.products.findIndex((id) => id === productId);
+const favoriteReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(handleFavorite, (state, action) => {
+      const { product, isFavorite } = action.payload;
 
-      if (index >= 0) {
-        state.products.splice(index, 1);
+      if (isFavorite) {
+        const newList = state.products.filter(
+          (stateProduct) => stateProduct.id !== product.id
+        );
+        state.products = newList;
         return;
       }
 
-      state.products.push(productId);
-    }
-  }
+      state.products.push(product);
+    })
+    .addCase(setFavoriteProducts, (state, action) => {
+      const { products, productsIds } = action.payload;
+
+      const favoritesProducts = products.filter((item) =>
+        isProductFavorite(item.id, productsIds)
+      );
+
+      state.productsIds = [...productsIds];
+      state.products = [...favoritesProducts];
+      state.isInitialDataFetch = true;
+    });
 });
 
-export const favorite = favoriteSlice.reducer;
-export const favoriteActions = favoriteSlice.actions;
+export default favoriteReducer;

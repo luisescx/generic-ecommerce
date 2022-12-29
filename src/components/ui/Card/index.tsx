@@ -3,31 +3,53 @@ import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import xboxImage from "../../../../public/xbox.jpg";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { Product } from "types/domain/product";
+import { handleCart } from "@store/modules/cart/actions";
+import { checkFavoriteProduct } from "@store/modules/favorites/actions";
+import { IFavoriteState } from "@store/modules/favorites/types";
+import { IReducersState } from "@store/modules/rootReducer";
 
-type CardProps = {
-  title: string;
-  price: number;
-};
+const Card = (product: Product) => {
+  const { price, id, name } = product;
 
-const Card = ({ price, title }: CardProps) => {
   const [isOnCart, setIsOnCart] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { products } = useSelector<IReducersState, IFavoriteState>(
+    (state) => state.favorite
+  );
 
-  const handleCart = useCallback(() => {
+  const isFavorite = useMemo(() => {
+    return products.some((favoriteProduct) => favoriteProduct.id === id);
+  }, [id, products]);
+
+  const dispatch = useDispatch();
+
+  const updateCart = useCallback(() => {
     setIsOnCart(!isOnCart);
-  }, [isOnCart]);
+
+    dispatch(handleCart(id));
+  }, [dispatch, id, isOnCart]);
+
+  const updateFavorite = useCallback(() => {
+    dispatch(
+      checkFavoriteProduct({
+        product,
+        isFavorite
+      })
+    );
+  }, [dispatch, isFavorite, product]);
 
   const IconComponent = useMemo(() => {
     return isFavorite ? HiHeart : HiOutlineHeart;
   }, [isFavorite]);
 
   return (
-    <div className="relative block rounded-lg bg-white p-6 shadow-lg">
+    <div className="relative rounded-lg bg-white p-6 shadow-lg">
       <div className="absolute top-6 right-6 rounded-full bg-gray-100 p-1">
         <IconComponent
           size={24}
           className="cursor-pointer text-red-500"
-          onClick={() => setIsFavorite(!isFavorite)}
+          onClick={updateFavorite}
         />
       </div>
 
@@ -42,7 +64,7 @@ const Card = ({ price, title }: CardProps) => {
       </div>
 
       <h3 className="mt-6 text-lg font-medium leading-tight text-gray-900">
-        {title}
+        {name}
       </h3>
 
       <p className="mb-6 text-base font-normal text-green-500">{`$${price}`}</p>
@@ -52,7 +74,7 @@ const Card = ({ price, title }: CardProps) => {
           title={isOnCart ? "Remove from cart" : "Add to cart"}
           isOutlined={isOnCart}
           isFullWidth
-          onClick={handleCart}
+          onClick={updateCart}
         />
       </div>
     </div>
