@@ -1,11 +1,12 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { productsMockList } from "mocks/productsMock";
-import { all, put, takeLatest } from "redux-saga/effects";
+import { all, put, select, takeLatest } from "redux-saga/effects";
 import {
   getStorageItem,
   LocalStorageKeys,
   setStorageItem
 } from "utils/localStorage";
+import { IReducersState } from "../rootReducer";
 import {
   FavoritePayloadAction,
   handleFavorite,
@@ -46,12 +47,18 @@ export function* checkFavoriteProduct({
 }
 
 export function* initialFetch() {
-  const data = getStorageItem(LocalStorageKeys.favoritesProducts);
+  const isInitialDataFetch: boolean = yield select(
+    (state: IReducersState) => state.favorite.isInitialDataFetch
+  );
 
-  if (data?.length) {
-    yield put(
-      setFavoriteProducts({ products: productsMockList, productsIds: data })
-    );
+  if (!isInitialDataFetch) {
+    const data = getStorageItem(LocalStorageKeys.favoritesProducts);
+
+    if (data?.length) {
+      yield put(
+        setFavoriteProducts({ products: productsMockList, productsIds: data })
+      );
+    }
   }
 }
 

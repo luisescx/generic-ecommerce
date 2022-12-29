@@ -1,15 +1,23 @@
 /* eslint-disable prettier/prettier */
+import { initialFetch } from "@store/modules/favorites/actions";
 import { IFavoriteState } from "@store/modules/favorites/types";
 import { IReducersState } from "@store/modules/rootReducer";
 import Base from "@ui/Base";
 import Card from "@ui/Card";
 import Head from "next/head";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Favorites() {
+  const dispatch = useDispatch();
+
   const { products } = useSelector<IReducersState, IFavoriteState>(
     (state) => state.favorite
   );
+
+  useEffect(() => {
+    dispatch(initialFetch());
+  }, []);
 
   return (
     <>
