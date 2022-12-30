@@ -1,18 +1,9 @@
-import { initialFetch } from "@store/modules/favorites/actions";
 import Base from "@ui/Base";
 import Card from "@ui/Card";
 import { productsMockList } from "mocks/productsMock";
 import Head from "next/head";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 
 export default function Home() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(initialFetch());
-  }, []);
-
   return (
     <>
       <Head>

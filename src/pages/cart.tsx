@@ -24,12 +24,7 @@ export default function Cart() {
 
           <div className="grid grid-cols-[repeat(auto-fill,_minmax(17rem,_1fr))] gap-4">
             {products.map((product) => (
-              <CartCard
-                key={product.id}
-                name={product.name}
-                price={product.price}
-                id={product.id}
-              />
+              <CartCard key={product.id} product={{ ...product }} />
             ))}
           </div>
         </main>

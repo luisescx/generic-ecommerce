@@ -4,15 +4,22 @@ import { useCallback, useMemo } from "react";
 import xboxImage from "../../../../public/xbox.jpg";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { Product } from "types/domain/product";
 import { checkFavoriteProduct } from "@store/modules/favorites/actions";
 import { IFavoriteState } from "@store/modules/favorites/types";
 import { IReducersState } from "@store/modules/rootReducer";
 import CartInfo from "./CartInfo";
-import { handleRemoveCart } from "@store/modules/cart/actions";
+import {
+  handleItemQuantity,
+  handleRemoveCart
+} from "@store/modules/cart/actions";
+import { ProductCart } from "@store/modules/cart/types";
 
-const CartCard = (product: Product) => {
-  const { price, id, name } = product;
+type CartCardProps = {
+  product: ProductCart;
+};
+
+const CartCard = ({ product }: CartCardProps) => {
+  const { price, id, name, quantity } = product;
 
   const dispatch = useDispatch();
 
@@ -41,6 +48,13 @@ const CartCard = (product: Product) => {
     dispatch(handleRemoveCart({ productId: product.id }));
   }, [dispatch, product.id]);
 
+  const handleUpdateQuantity = useCallback(
+    (isMoreQuantity: boolean) => {
+      dispatch(handleItemQuantity({ isMoreQuantity, productId: id }));
+    },
+    [dispatch, id]
+  );
+
   return (
     <div className="relative rounded-lg bg-white p-6 shadow-lg">
       <div className="absolute top-6 right-6 rounded-full bg-gray-100 p-1">
@@ -67,7 +81,11 @@ const CartCard = (product: Product) => {
 
       <p className="mb-3 text-base font-normal text-green-500">{`$${price}`}</p>
 
-      <CartInfo />
+      <CartInfo
+        quantity={quantity}
+        price={price}
+        onUpdateQuantity={handleUpdateQuantity}
+      />
 
       <div className="mt-4 flex">
         <Button
