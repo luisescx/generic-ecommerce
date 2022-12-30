@@ -1,0 +1,11 @@
+.cart-quantity {
+  @apply flex flex-row items-center justify-between;
+}
+
+.cart-quantity__title {
+  @apply text-sm font-medium text-slate-600;
+}
+
+.cart-quantity__value {
+  @apply text-base font-bold text-slate-900;
+}
