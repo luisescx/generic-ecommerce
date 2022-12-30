@@ -1,7 +1,6 @@
 import Button from "@ui/Button";
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
-import xboxImage from "../../../../public/xbox.jpg";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "types/domain/product";
@@ -9,8 +8,12 @@ import { handleCart } from "@store/modules/cart/actions";
 import { checkFavoriteProduct } from "@store/modules/favorites/actions";
 import { IReducersState } from "@store/modules/rootReducer";
 
-const Card = (product: Product) => {
-  const { price, id, name } = product;
+type CardProps = {
+  product: Product;
+};
+
+const Card = ({ product }: CardProps) => {
+  const { price, id, name, image } = product;
 
   const { cart, favorite } = useSelector((state: IReducersState) => state);
   const { products: favoriteProducts } = favorite;
@@ -46,7 +49,7 @@ const Card = (product: Product) => {
   }, [isFavorite]);
 
   return (
-    <div className="relative rounded-lg bg-white p-6 shadow-lg">
+    <div className="relative flex flex-col rounded-lg bg-white p-6 shadow-lg">
       <div className="absolute top-6 right-6 rounded-full bg-gray-100 p-1">
         <IconComponent
           size={24}
@@ -57,11 +60,10 @@ const Card = (product: Product) => {
 
       <div className="flex justify-center">
         <Image
-          alt="Xbox console"
-          src={xboxImage}
+          alt={`${name}`}
+          src={`/images/products/${image}.jpg`}
           width={200}
           height={200}
-          priority
         />
       </div>
 
@@ -71,7 +73,7 @@ const Card = (product: Product) => {
 
       <p className="mb-6 text-base font-normal text-green-500">{`$${price}`}</p>
 
-      <div className="flex">
+      <div className="flex h-full flex-col justify-end">
         <Button
           title={isInCart ? "Remove from cart" : "Add to cart"}
           isOutlined={isInCart}

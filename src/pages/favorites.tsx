@@ -25,12 +25,7 @@ export default function Favorites() {
 
           <div className="grid grid-cols-[repeat(auto-fill,_minmax(17rem,_1fr))] gap-4">
             {products.map((product) => (
-              <Card
-                key={product.id}
-                name={product.name}
-                price={product.price}
-                id={product.id}
-              />
+              <Card key={product.id} product={{ ...product }} />
             ))}
           </div>
         </main>

@@ -1,7 +1,6 @@
 import Button from "@ui/Button";
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
-import xboxImage from "../../../../public/xbox.jpg";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { checkFavoriteProduct } from "@store/modules/favorites/actions";
@@ -19,7 +18,7 @@ type CartCardProps = {
 };
 
 const CartCard = ({ product }: CartCardProps) => {
-  const { price, id, name, quantity } = product;
+  const { price, id, name, quantity, image } = product;
 
   const dispatch = useDispatch();
 
@@ -56,7 +55,7 @@ const CartCard = ({ product }: CartCardProps) => {
   );
 
   return (
-    <div className="relative rounded-lg bg-white p-6 shadow-lg">
+    <div className="relative flex flex-col rounded-lg bg-white p-6 shadow-lg">
       <div className="absolute top-6 right-6 rounded-full bg-gray-100 p-1">
         <IconComponent
           size={24}
@@ -67,8 +66,8 @@ const CartCard = ({ product }: CartCardProps) => {
 
       <div className="flex justify-center">
         <Image
-          alt="Xbox console"
-          src={xboxImage}
+          alt={`${name}`}
+          src={`/images/products/${image}.jpg`}
           width={200}
           height={200}
           priority
@@ -81,19 +80,21 @@ const CartCard = ({ product }: CartCardProps) => {
 
       <p className="mb-3 text-base font-normal text-green-500">{`$${price}`}</p>
 
-      <CartInfo
-        quantity={quantity}
-        price={price}
-        onUpdateQuantity={handleUpdateQuantity}
-      />
-
-      <div className="mt-4">
-        <Button
-          title="Remove from cart"
-          isOutlined
-          isFullWidth
-          onClick={handleRemoveProductCart}
+      <div className="flex h-full flex-col justify-end">
+        <CartInfo
+          quantity={quantity}
+          price={price}
+          onUpdateQuantity={handleUpdateQuantity}
         />
+
+        <div className="mt-4 ">
+          <Button
+            title="Remove from cart"
+            isOutlined
+            isFullWidth
+            onClick={handleRemoveProductCart}
+          />
+        </div>
       </div>
     </div>
   );
