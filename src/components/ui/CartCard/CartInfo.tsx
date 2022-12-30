@@ -1,3 +1,4 @@
+import { cva } from "class-variance-authority";
 import { useMemo } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
@@ -6,6 +7,17 @@ type CartInfoProps = {
   price: number;
   onUpdateQuantity: (isMoreQuantity: boolean) => void;
 };
+
+const cartInfoStyles = cva("cursor-pointer text-blue-500 hover:text-blue-700", {
+  variants: {
+    isDisabled: {
+      true: "cursor-not-allowed text-slate-500 hover:text-slate-700"
+    }
+  },
+  defaultVariants: {
+    isDisabled: false
+  }
+});
 
 const CartInfo = ({ quantity, price, onUpdateQuantity }: CartInfoProps) => {
   const total = useMemo(() => {
@@ -20,8 +32,8 @@ const CartInfo = ({ quantity, price, onUpdateQuantity }: CartInfoProps) => {
           <div>
             <AiOutlineLeft
               size={18}
-              className="cursor-pointer text-blue-500 hover:text-blue-700"
-              onClick={() => onUpdateQuantity(false)}
+              className={cartInfoStyles({ isDisabled: quantity <= 1 })}
+              onClick={() => (quantity > 1 ? onUpdateQuantity(false) : null)}
             />
           </div>
 
