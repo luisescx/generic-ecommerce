@@ -1,23 +1,16 @@
 import { initialFetch } from "@store/modules/favorites/actions";
-import { IFavoriteState } from "@store/modules/favorites/types";
-import { IReducersState } from "@store/modules/rootReducer";
 import Base from "@ui/Base";
 import Card from "@ui/Card";
 import { productsMockList } from "mocks/productsMock";
 import Head from "next/head";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { isInitialDataFetch } = useSelector<IReducersState, IFavoriteState>(
-    (state) => state.favorite
-  );
 
   useEffect(() => {
-    if (!isInitialDataFetch) {
-      dispatch(initialFetch());
-    }
+    dispatch(initialFetch());
   }, []);
 
   return (
