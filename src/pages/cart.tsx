@@ -37,8 +37,8 @@ export default function Cart() {
           </div>
 
           {!!products.length && (
-            <div className="flex flex-row gap-4">
-              <div className="basis-1/4">
+            <div className="lg:flex lg:flex-row lg:gap-4">
+              <div className="mb-8 lg:mb-0 lg:basis-1/4">
                 <CartTotalCard
                   totalValue={totalValue}
                   itemsTotalQuantity={itemsTotalQuantity}
