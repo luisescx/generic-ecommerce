@@ -1,22 +1,30 @@
 import { Product } from "types/domain/product";
 
-export type ProductCart = {
-  id: number;
-  quantity: number;
-};
-
-export type ICartState = {
-  productsStorage: ProductCart[];
-  products: Product[];
-};
-
 export enum CartActionTypes {
   handleCart = "cart/handleCart",
   addToCart = "cart/addToCart",
   removeFromCart = "cart/removeFromCart",
+  handleItemQuantity = "cart/handleItemQuantity",
   updateItemQuantity = "cart/updateItemQuantity",
-  handleRemoveCart = "cart/handleRemoveCart"
+  handleRemoveCart = "cart/handleRemoveCart",
+  setCartsProducts = "cart/setCartsProducts",
+  cartInitialFetch = "cart/cartInitialFetch"
 }
+
+export type ProductCartStorage = {
+  id: number;
+  quantity: number;
+};
+
+export type ProductCart = {
+  quantity: number;
+} & Product;
+
+export type ICartState = {
+  productsStorage: ProductCartStorage[];
+  products: ProductCart[];
+  isInitialDataFetch: boolean;
+};
 
 export type CartPayloadAction = {
   product: Product;
@@ -24,4 +32,9 @@ export type CartPayloadAction = {
 
 export type HandleCartPayloadAction = {
   isInCart: boolean;
-} & Pick<CartPayloadAction, "product">;
+} & CartPayloadAction;
+
+export type HandleItemQuantityPayloadAction = {
+  productId: number;
+  isMoreQuantity: boolean;
+};
