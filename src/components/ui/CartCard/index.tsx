@@ -5,32 +5,28 @@ import xboxImage from "../../../../public/xbox.jpg";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "types/domain/product";
-import { handleCart } from "@store/modules/cart/actions";
 import { checkFavoriteProduct } from "@store/modules/favorites/actions";
+import { IFavoriteState } from "@store/modules/favorites/types";
 import { IReducersState } from "@store/modules/rootReducer";
+import CartInfo from "./CartInfo";
+import { handleRemoveCart } from "@store/modules/cart/actions";
 
-const Card = (product: Product) => {
+const CartCard = (product: Product) => {
   const { price, id, name } = product;
-
-  const { cart, favorite } = useSelector((state: IReducersState) => state);
-  const { products: favoriteProducts } = favorite;
-  const { products: cartsProducts } = cart;
-
-  const isFavorite = useMemo(
-    () => favoriteProducts.some((favoriteProduct) => favoriteProduct.id === id),
-    [favoriteProducts, id]
-  );
-
-  const isInCart = useMemo(
-    () => cartsProducts.some((cartProduct) => cartProduct.id === id),
-    [cartsProducts, id]
-  );
 
   const dispatch = useDispatch();
 
-  const updateCart = useCallback(() => {
-    dispatch(handleCart({ product, isInCart: true }));
-  }, [dispatch, product]);
+  const { products } = useSelector<IReducersState, IFavoriteState>(
+    (state) => state.favorite
+  );
+
+  const isFavorite = useMemo(() => {
+    return products.some((favoriteProduct) => favoriteProduct.id === id);
+  }, [id, products]);
+
+  const IconComponent = useMemo(() => {
+    return isFavorite ? HiHeart : HiOutlineHeart;
+  }, [isFavorite]);
 
   const updateFavorite = useCallback(() => {
     dispatch(
@@ -41,9 +37,9 @@ const Card = (product: Product) => {
     );
   }, [dispatch, isFavorite, product]);
 
-  const IconComponent = useMemo(() => {
-    return isFavorite ? HiHeart : HiOutlineHeart;
-  }, [isFavorite]);
+  const handleRemoveProductCart = useCallback(() => {
+    dispatch(handleRemoveCart({ productId: product.id }));
+  }, [dispatch, product.id]);
 
   return (
     <div className="relative rounded-lg bg-white p-6 shadow-lg">
@@ -69,18 +65,20 @@ const Card = (product: Product) => {
         {name}
       </h3>
 
-      <p className="mb-6 text-base font-normal text-green-500">{`$${price}`}</p>
+      <p className="mb-3 text-base font-normal text-green-500">{`$${price}`}</p>
 
-      <div className="flex">
+      <CartInfo />
+
+      <div className="mt-4 flex">
         <Button
-          title={isInCart ? "Remove from cart" : "Add to cart"}
-          isOutlined={isInCart}
+          title="Remove from cart"
+          isOutlined
           isFullWidth
-          onClick={updateCart}
+          onClick={handleRemoveProductCart}
         />
       </div>
     </div>
   );
 };
 
-export default Card;
+export default CartCard;
