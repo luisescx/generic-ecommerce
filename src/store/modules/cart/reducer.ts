@@ -1,29 +1,38 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import { ICartState } from "./types";
+import { addToCart, removeFromCart } from "./actions";
 
 const initialState: ICartState = {
+  productsStorage: [],
   products: []
 };
 
-const cartSlice = createSlice({
-  name: "product",
-  initialState,
-  reducers: {
-    handleCart: (state, action: PayloadAction<number>) => {
-      const productId = action.payload;
+const cartReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(addToCart, (state, action) => {
+      const { product } = action.payload;
 
-      const index = state.products.findIndex((id) => id === productId);
+      state.products.push(product);
+      state.productsStorage.push({
+        id: product.id,
+        quantity: 1
+      });
+    })
+    .addCase(removeFromCart, (state, action) => {
+      const { productId } = action.payload;
 
-      if (index >= 0) {
-        state.products.splice(index, 1);
-        return;
+      const indexProductsStorage = state.productsStorage.findIndex(
+        (item) => item.id === productId
+      );
+
+      if (indexProductsStorage >= 0) {
+        state.productsStorage.splice(indexProductsStorage, 1);
+        state.products.splice(
+          state.products.findIndex((item) => item.id === productId),
+          1
+        );
       }
-
-      state.products.push(productId);
-    }
-  }
+    });
 });
 
-export const cart = cartSlice.reducer;
-export const cartActions = cartSlice.actions;
+export default cartReducer;

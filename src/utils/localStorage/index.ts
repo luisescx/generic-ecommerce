@@ -1,7 +1,8 @@
 const APP_KEY = "@ONLINE_SHOPPING";
 
 export enum LocalStorageKeys {
-  favoritesProducts = "FAVORITES"
+  favoritesProducts = "FAVORITES",
+  cartProducts = "CART"
 }
 
 export function getStorageItem(key: string) {

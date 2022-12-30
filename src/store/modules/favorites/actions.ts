@@ -2,10 +2,10 @@ import { createAction } from "@reduxjs/toolkit";
 import { Product } from "types/domain/product";
 import { FavoritesActionTypes } from "./types";
 
-export interface FavoritePayloadAction {
+export type FavoritePayloadAction = {
   product: Product;
   isFavorite: boolean;
-}
+};
 
 export const checkFavoriteProduct = createAction<FavoritePayloadAction>(
   FavoritesActionTypes.checkFavoriteProduct
