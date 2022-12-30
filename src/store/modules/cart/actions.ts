@@ -39,3 +39,7 @@ export const updateItemQuantity = createAction<
 export const handleItemQuantity = createAction<HandleItemQuantityPayloadAction>(
   CartActionTypes.handleItemQuantity
 );
+
+export const removeAllItemsFromCart = createAction(
+  CartActionTypes.removeAllItemsFromCart
+);

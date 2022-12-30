@@ -135,9 +135,14 @@ export function* handleItemQuantity({
   }
 }
 
+export function removeAllItemsFromCart() {
+  setStorageItem(LocalStorageKeys.cartProducts, []);
+}
+
 export default all([
   takeLatest(CartActionTypes.handleCart, handleCart),
   takeLatest(CartActionTypes.handleRemoveCart, handleRemoveCart),
   takeLatest(CartActionTypes.cartInitialFetch, cartInitialFetch),
-  takeLatest(CartActionTypes.handleItemQuantity, handleItemQuantity)
+  takeLatest(CartActionTypes.handleItemQuantity, handleItemQuantity),
+  takeLatest(CartActionTypes.removeAllItemsFromCart, removeAllItemsFromCart)
 ]);

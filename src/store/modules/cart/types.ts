@@ -8,7 +8,8 @@ export enum CartActionTypes {
   updateItemQuantity = "cart/updateItemQuantity",
   handleRemoveCart = "cart/handleRemoveCart",
   setCartsProducts = "cart/setCartsProducts",
-  cartInitialFetch = "cart/cartInitialFetch"
+  cartInitialFetch = "cart/cartInitialFetch",
+  removeAllItemsFromCart = "cart/removeAllItemsFromCart"
 }
 
 export type ProductCartStorage = {
