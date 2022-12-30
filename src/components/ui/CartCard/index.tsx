@@ -87,7 +87,7 @@ const CartCard = ({ product }: CartCardProps) => {
         onUpdateQuantity={handleUpdateQuantity}
       />
 
-      <div className="mt-4 flex">
+      <div className="mt-4">
         <Button
           title="Remove from cart"
           isOutlined
