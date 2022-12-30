@@ -30,7 +30,7 @@ const Base = ({ children }: BaseProps) => {
 
         <div className="mt-6 pb-20">{children}</div>
 
-        <footer className="absolute bottom-0 mt-8 w-full max-w-screen-xl border-t border-gray-200">
+        <footer className="absolute bottom-0 left-0 right-0 mt-8 border-t border-gray-200">
           <div className="p-4 text-center text-gray-700">
             © 2023 Copyright: Online Shop
           </div>
