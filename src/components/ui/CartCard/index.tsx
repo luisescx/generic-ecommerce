@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { checkFavoriteProduct } from "@store/modules/favorites/actions";
 import { IFavoriteState } from "@store/modules/favorites/types";
 import { IReducersState } from "@store/modules/rootReducer";
 import CartInfo from "./CartInfo";
@@ -12,6 +11,7 @@ import {
   handleRemoveCart
 } from "@store/modules/cart/actions";
 import { ProductCart } from "@store/modules/cart/types";
+import { checkFavoriteProduct } from "@store/modules/favorites/reducer";
 
 type CartCardProps = {
   product: ProductCart;

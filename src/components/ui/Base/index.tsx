@@ -1,5 +1,5 @@
 import { cartInitialFetch } from "@store/modules/cart/actions";
-import { initialFetch } from "@store/modules/favorites/actions";
+import { initialFetch } from "@store/modules/favorites/reducer";
 import Container from "@ui/Container";
 import Menu from "@ui/Menu";
 import { useEffect } from "react";

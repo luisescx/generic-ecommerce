@@ -1,6 +1,10 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { IFavoriteState } from "./types";
-import { handleFavorite, setFavoriteProducts } from "./actions";
+import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  FavoritePayloadAction,
+  FavoritesActionTypes,
+  IFavoriteState,
+  SetFavoriteProductsAction
+} from "./types";
 
 const initialState: IFavoriteState = {
   products: [],
@@ -11,9 +15,11 @@ const initialState: IFavoriteState = {
 const isProductFavorite = (id: number, localStorageProductsIds: number[]) =>
   localStorageProductsIds.some((item) => item === id);
 
-const favoriteReducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(handleFavorite, (state, action) => {
+const favoriteSlice = createSlice({
+  name: "favorite",
+  initialState,
+  reducers: {
+    handleFavorite(state, action: PayloadAction<FavoritePayloadAction>) {
       const { product, isFavorite } = action.payload;
 
       if (isFavorite) {
@@ -25,8 +31,11 @@ const favoriteReducer = createReducer(initialState, (builder) => {
       }
 
       state.products.push(product);
-    })
-    .addCase(setFavoriteProducts, (state, action) => {
+    },
+    setFavoriteProducts(
+      state,
+      action: PayloadAction<SetFavoriteProductsAction>
+    ) {
       const { products, productsIds } = action.payload;
 
       const favoritesProducts = products.filter((item) =>
@@ -36,7 +45,22 @@ const favoriteReducer = createReducer(initialState, (builder) => {
       state.productsIds = [...productsIds];
       state.products = [...favoritesProducts];
       state.isInitialDataFetch = true;
-    });
+    }
+  }
 });
 
-export default favoriteReducer;
+const { handleFavorite, setFavoriteProducts } = favoriteSlice.actions;
+
+const checkFavoriteProduct = createAction<FavoritePayloadAction>(
+  FavoritesActionTypes.checkFavoriteProduct
+);
+const initialFetch = createAction(FavoritesActionTypes.initialFetch);
+
+export {
+  handleFavorite,
+  setFavoriteProducts,
+  checkFavoriteProduct,
+  initialFetch
+};
+
+export default favoriteSlice.reducer;

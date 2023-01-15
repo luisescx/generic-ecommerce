@@ -5,8 +5,8 @@ import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "types/domain/product";
 import { handleCart } from "@store/modules/cart/actions";
-import { checkFavoriteProduct } from "@store/modules/favorites/actions";
 import { IReducersState } from "@store/modules/rootReducer";
+import { checkFavoriteProduct } from "@store/modules/favorites/reducer";
 
 type CardProps = {
   product: Product;

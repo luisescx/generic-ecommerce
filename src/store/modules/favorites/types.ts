@@ -6,6 +6,16 @@ export type IFavoriteState = {
   isInitialDataFetch: boolean;
 };
 
+export type FavoritePayloadAction = {
+  product: Product;
+  isFavorite: boolean;
+};
+
+export type SetFavoriteProductsAction = {
+  products: Product[];
+  productsIds: number[];
+};
+
 export enum FavoritesActionTypes {
   handleFavorite = "favorite/handleFavorite",
   checkFavoriteProduct = "favorite/checkFavoriteProduct",

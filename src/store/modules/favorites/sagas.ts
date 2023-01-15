@@ -7,12 +7,8 @@ import {
   setStorageItem
 } from "utils/localStorage";
 import { IReducersState } from "../rootReducer";
-import {
-  FavoritePayloadAction,
-  handleFavorite,
-  setFavoriteProducts
-} from "./actions";
-import { FavoritesActionTypes } from "./types";
+import { handleFavorite, setFavoriteProducts } from "./reducer";
+import { FavoritePayloadAction, FavoritesActionTypes } from "./types";
 
 function saveFavorite(favoritesList: number[]) {
   setStorageItem(LocalStorageKeys.favoritesProducts, favoritesList);
